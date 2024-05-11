@@ -31,7 +31,7 @@ PORT=3015
 
 安装依赖：
 ```
-nmp install
+npm install
 ```
 
 启动服务：
