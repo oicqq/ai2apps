@@ -6,17 +6,26 @@ import {proxyCall} from "../util/ProxyCall.js";
 import { Readable } from "stream"
 import followRedirects from "follow-redirects";
 
-const OPENAI_API_KEY=process.env.OPENAI_API_KEY;
+// Load environment variables for API key and base URL
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const OPENAI_BASE_URL = process.env.OPENAI_base_url;
+
 let openAI;
-if(OPENAI_API_KEY && OPENAI_API_KEY!=="[YOUR OPENAI KEY]") {
-	openAI = new OpenAI({
-		apiKey:OPENAI_API_KEY,
-	});
-}else{
-	openAI=null;
+
+// Check if the API key is set and not a placeholder
+if (OPENAI_API_KEY && OPENAI_API_KEY !== "[YOUR OPENAI KEY]") {
+    openAI = new OpenAI({
+        apiKey: OPENAI_API_KEY,
+        base_url: OPENAI_BASE_URL, // Corrected the reference to the base URL
+    });
+} else {
+    openAI = null; // Set to null if the API key is not properly configured
 }
-const streamMap=new Map();
-let nextStreamId=0;
+
+// Initialize a map to manage stream IDs
+const streamMap = new Map();
+let nextStreamId = 0;
+
 
 //---------------------------------------------------------------------------
 //Anthropic:
